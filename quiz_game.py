@@ -14,6 +14,7 @@ class QuizGame:
         """QuizGame 인스턴스를 초기화합니다."""
         self.quizzes = []
         self.best_score = 0
+        self.game_history = []  # 게임 기록 히스토리
         self.load_data()
     
     def create_default_quizzes(self):
@@ -78,6 +79,7 @@ class QuizGame:
             # 파일이 없으면 기본 데이터로 초기화
             self.quizzes = self.create_default_quizzes()
             self.best_score = 0
+            self.game_history = []
             self.save_data()
             return
         
@@ -88,6 +90,7 @@ class QuizGame:
             # 퀴즈 로드
             self.quizzes = [Quiz.from_dict(q) for q in data.get("quizzes", [])]
             self.best_score = data.get("best_score", 0)
+            self.game_history = data.get("game_history", [])
             
             # 로드된 데이터가 없으면 기본값 사용
             if not self.quizzes:
@@ -99,6 +102,7 @@ class QuizGame:
             print("⚠️ 저장된 데이터가 손상되었습니다. 기본 데이터로 복구합니다.")
             self.quizzes = self.create_default_quizzes()
             self.best_score = 0
+            self.game_history = []
             self.save_data()
         
         except Exception as e:
@@ -106,6 +110,7 @@ class QuizGame:
             print(f"⚠️ 데이터 로드 중 오류가 발생했습니다: {e}")
             self.quizzes = self.create_default_quizzes()
             self.best_score = 0
+            self.game_history = []
             self.save_data()
     
     def save_data(self):
@@ -113,7 +118,8 @@ class QuizGame:
         try:
             data = {
                 "quizzes": [q.to_dict() for q in self.quizzes],
-                "best_score": self.best_score
+                "best_score": self.best_score,
+                "game_history": self.game_history
             }
             
             with open(self.STATE_FILE, "w", encoding="utf-8") as f:
@@ -189,15 +195,28 @@ class QuizGame:
     
     def display_result(self, correct, total):
         """퀴즈 결과를 표시합니다."""
+        from datetime import datetime
+        
         percentage = (correct / total) * 100
         
         print("\n" + "=" * 50)
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({int(percentage)}점)")
         
+        # 게임 기록 저장
+        game_record = {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "score": correct,
+            "total": total,
+            "percentage": int(percentage)
+        }
+        self.game_history.append(game_record)
+        
         # 최고 점수 업데이트
         if correct > self.best_score:
             self.best_score = correct
             print("🎉 새로운 최고 점수입니다!")
+            self.save_data()
+        else:
             self.save_data()
         
         print("=" * 50)
@@ -262,6 +281,13 @@ class QuizGame:
                 print(f"최고 점수: {self.best_score}문제 중 {self.best_score}문제 정답 ({int(percentage)}점)")
             else:
                 print("등록된 퀴즈가 없습니다.")
+        
+        # 최근 5개 게임 기록 표시
+        if self.game_history:
+            print("\n최근 게임 기록:")
+            print("-" * 50)
+            for i, record in enumerate(self.game_history[-5:], 1):
+                print(f"{i}. {record['timestamp']} - {record['score']}/{record['total']} ({record['percentage']}%)")
         
         print("=" * 50)
     
