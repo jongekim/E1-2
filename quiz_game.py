@@ -1,5 +1,6 @@
 import json
 import os
+import random
 from quiz import Quiz
 from utils import get_valid_integer, get_non_empty_string
 
@@ -152,13 +153,17 @@ class QuizGame:
             print("⚠️ 등록된 퀴즈가 없습니다.")
             return
         
-        print(f"\n📝 퀴즈를 시작합니다! (총 {len(self.quizzes)}문제)")
+        # 퀴즈 순서를 랜덤하게 섞기
+        shuffled_quizzes = self.quizzes.copy()
+        random.shuffle(shuffled_quizzes)
+        
+        print(f"\n📝 퀴즈를 시작합니다! (총 {len(shuffled_quizzes)}문제 - 랜덤 순서)")
         print("-" * 50)
         
         score = 0
         
         try:
-            for i, quiz in enumerate(self.quizzes, 1):
+            for i, quiz in enumerate(shuffled_quizzes, 1):
                 quiz.display(i)
                 answer = get_valid_integer("정답 입력: ", 1, 4)
                 
@@ -180,7 +185,7 @@ class QuizGame:
             exit()
         
         # 결과 표시
-        self.display_result(score, len(self.quizzes))
+        self.display_result(score, len(shuffled_quizzes))
     
     def display_result(self, correct, total):
         """퀴즈 결과를 표시합니다."""
