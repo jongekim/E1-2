@@ -1,7 +1,7 @@
 class Quiz:
     """개별 퀴즈를 표현하는 클래스"""
     
-    def __init__(self, question, choices, answer):
+    def __init__(self, question, choices, answer, hint=None):
         """
         Quiz 인스턴스를 초기화합니다.
         
@@ -9,10 +9,12 @@ class Quiz:
             question (str): 퀴즈 문제
             choices (list): 4개의 선택지 리스트
             answer (int): 정답 번호 (1-4)
+            hint (str): 힌트 (선택사항)
         """
         self.question = question
         self.choices = choices
         self.answer = answer
+        self.hint = hint
     
     def display(self, question_number=None):
         """
@@ -43,6 +45,18 @@ class Quiz:
         """
         return user_answer == self.answer
     
+    def show_hint(self):
+        """
+        힌트를 출력합니다.
+        
+        Returns:
+            str: 힌트 텍스트. 힌트가 없으면 안내 메시지 반환
+        """
+        if self.hint:
+            return f"💡 힌트: {self.hint}"
+        else:
+            return "💡 이 문제에는 힌트가 없습니다."
+    
     def to_dict(self):
         """
         퀴즈를 딕셔너리로 변환합니다 (JSON 저장용).
@@ -50,11 +64,14 @@ class Quiz:
         Returns:
             dict: 퀴즈 정보를 담은 딕셔너리
         """
-        return {
+        data = {
             "question": self.question,
             "choices": self.choices,
             "answer": self.answer
         }
+        if self.hint:
+            data["hint"] = self.hint
+        return data
     
     @staticmethod
     def from_dict(data):
@@ -67,4 +84,5 @@ class Quiz:
         Returns:
             Quiz: 생성된 Quiz 인스턴스
         """
-        return Quiz(data["question"], data["choices"], data["answer"])
+        hint = data.get("hint", None)
+        return Quiz(data["question"], data["choices"], data["answer"], hint)
