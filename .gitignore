@@ -33,3 +33,4 @@ htmlcov/
 *.swp
 *.swo
 *~
+state.json
