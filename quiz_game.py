@@ -42,6 +42,31 @@ class QuizGame:
                 ["main", "master", "develop", "trunk"],
                 2
             ),
+            Quiz(
+                "JavaScript에서 변수를 선언하는 최신 방식은?",
+                ["var", "let", "const", "define"],
+                2
+            ),
+            Quiz(
+                "React의 핵심 개념은?",
+                ["MVC", "Component", "Service", "Model"],
+                2
+            ),
+            Quiz(
+                "Docker는 무엇을 사용하여 애플리케이션을 패키징하는가?",
+                ["이미지", "컨테이너", "가상머신", "클라우드"],
+                2
+            ),
+            Quiz(
+                "REST API에서 POST는 어떤 작업에 사용되는가?",
+                ["조회", "생성", "수정", "삭제"],
+                2
+            ),
+            Quiz(
+                "데이터베이스에서 PRIMARY KEY는 무엇을 보장하는가?",
+                ["빠른 실행", "유일성", "암호화", "백업"],
+                2
+            ),
         ]
         return default_quizzes
     
