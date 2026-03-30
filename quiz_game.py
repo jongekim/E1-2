@@ -1,6 +1,7 @@
 import json
 import os
 from quiz import Quiz
+from utils import get_valid_integer, get_non_empty_string
 
 
 class QuizGame:
@@ -134,31 +135,16 @@ class QuizGame:
     
     def get_menu_choice(self):
         """메뉴 선택을 입력받습니다."""
-        while True:
-            try:
-                choice = input("선택: ").strip()
-                
-                if not choice:
-                    print("⚠️ 선택을 입력해주세요.")
-                    continue
-                
-                choice = int(choice)
-                
-                if 1 <= choice <= 5:
-                    return choice
-                else:
-                    print("⚠️ 1-5 사이의 숫자를 입력하세요.")
-            
-            except ValueError:
-                print("⚠️ 잘못된 입력입니다. 1-5 사이의 숫자를 입력하세요.")
-            except EOFError:
-                print("\n프로그램을 종료합니다.")
-                self.save_data()
-                exit()
-            except KeyboardInterrupt:
-                print("\n프로그램을 종료합니다.")
-                self.save_data()
-                exit()
+        try:
+            return get_valid_integer("선택: ", 1, 5)
+        except EOFError:
+            print("\n프로그램을 종료합니다.")
+            self.save_data()
+            exit()
+        except KeyboardInterrupt:
+            print("\n프로그램을 종료합니다.")
+            self.save_data()
+            exit()
     
     def play_quiz(self):
         """퀴즈를 풀기 시작합니다."""
@@ -174,24 +160,7 @@ class QuizGame:
         try:
             for i, quiz in enumerate(self.quizzes, 1):
                 quiz.display(i)
-                
-                while True:
-                    try:
-                        answer = input("정답 입력: ").strip()
-                        
-                        if not answer:
-                            print("⚠️ 정답을 입력해주세요.")
-                            continue
-                        
-                        answer = int(answer)
-                        
-                        if 1 <= answer <= 4:
-                            break
-                        else:
-                            print("⚠️ 1-4 사이의 숫자를 입력하세요.")
-                    
-                    except ValueError:
-                        print("⚠️ 잘못된 입력입니다. 1-4 사이의 숫자를 입력하세요.")
+                answer = get_valid_integer("정답 입력: ", 1, 4)
                 
                 if quiz.check_answer(answer):
                     print("✅ 정답입니다!")
@@ -234,36 +203,14 @@ class QuizGame:
         print("-" * 50)
         
         try:
-            question = input("문제를 입력하세요: ").strip()
-            if not question:
-                print("⚠️ 문제를 입력해주세요.")
-                return
+            question = get_non_empty_string("문제를 입력하세요: ")
             
             choices = []
             for i in range(1, 5):
-                choice = input(f"선택지 {i}: ").strip()
-                if not choice:
-                    print("⚠️ 선택지를 입력해주세요.")
-                    return
+                choice = get_non_empty_string(f"선택지 {i}: ")
                 choices.append(choice)
             
-            while True:
-                try:
-                    answer = input("정답 번호 (1-4): ").strip()
-                    
-                    if not answer:
-                        print("⚠️ 정답 번호를 입력해주세요.")
-                        continue
-                    
-                    answer = int(answer)
-                    
-                    if 1 <= answer <= 4:
-                        break
-                    else:
-                        print("⚠️ 1-4 사이의 숫자를 입력하세요.")
-                
-                except ValueError:
-                    print("⚠️ 잘못된 입력입니다. 1-4 사이의 숫자를 입력하세요.")
+            answer = get_valid_integer("정답 번호 (1-4): ", 1, 4)
             
             # 퀴즈 추가
             new_quiz = Quiz(question, choices, answer)
