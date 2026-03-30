@@ -298,6 +298,8 @@ class QuizGame:
     def display_best_score(self):
         """최고 점수를 출력합니다."""
         print("\n" + "=" * 50)
+        print("🏆 점수 확인".center(50))
+        print("=" * 50)
         
         if self.best_score == 0 and self.quizzes:
             print("아직 퀴즈를 풀지 않았습니다.")
@@ -305,7 +307,7 @@ class QuizGame:
             total = len(self.quizzes)
             if total > 0:
                 percentage = (self.best_score / total) * 100
-                print(f"🏆 최고 점수: {self.best_score}문제 중 {self.best_score}문제 정답 ({int(percentage)}점)")
+                print(f"최고 점수: {self.best_score}문제 중 {self.best_score}문제 정답 ({int(percentage)}점)")
             else:
                 print("등록된 퀴즈가 없습니다.")
         
