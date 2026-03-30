@@ -3,6 +3,7 @@ import os
 import random
 from quiz import Quiz
 from utils import get_valid_integer, get_non_empty_string
+from stats import calculate_average_score, calculate_total_games, calculate_improvement
 
 
 class QuizGame:
@@ -282,8 +283,18 @@ class QuizGame:
             else:
                 print("등록된 퀴즈가 없습니다.")
         
-        # 최근 5개 게임 기록 표시
+        # 게임 통계
         if self.game_history:
+            print("\n📊 게임 통계:")
+            print("-" * 50)
+            total_games = calculate_total_games(self.game_history)
+            avg_score = calculate_average_score(self.game_history)
+            improvement = calculate_improvement(self.game_history)
+            
+            print(f"총 게임 횟수: {total_games}회")
+            print(f"평균 정답률: {int(avg_score)}%")
+            print(f"향상도: {improvement:+d}%포인트")
+            
             print("\n최근 게임 기록:")
             print("-" * 50)
             for i, record in enumerate(self.game_history[-5:], 1):
