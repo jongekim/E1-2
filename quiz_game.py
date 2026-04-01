@@ -279,7 +279,7 @@ class QuizGame:
             total = len(self.quizzes)
             if total > 0:
                 percentage = (self.best_score / total) * 100
-                print(f"최고 점수: {self.best_score}문제 중 {self.best_score}문제 정답 ({int(percentage)}점)")
+                print(f"최고 점수: {total}문제 중 {self.best_score}문제 정답 ({int(percentage)}점)")
             else:
                 print("등록된 퀴즈가 없습니다.")
         
