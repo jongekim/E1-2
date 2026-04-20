@@ -246,11 +246,31 @@ git pull                    # 변경사항 다운로드
 **최종 수정**: 2026년 3월
 
 
-### Clone/Pull 실습 완료
-- 복제본에서 수정 후 push, 원본에서 pull 반영 확인 완료
+## Clone / Pull 실습 확인 기록
 
-### Git 검증 포인트
-- 커밋 수: 10개 이상
-- 브랜치 생성/병합: 1회 이상
-- clone: 1회 이상
-- pull: 1회 이상
+README만으로도 실습 여부를 확인할 수 있도록, 실제 git log 기준으로 핵심 흔적을 정리했습니다.
+
+### 1) clone 실습 흔적
+- 커밋 `6cb4148` : `Docs: clone 실습용 README 한 줄 추가`
+- 복제된 작업본에서 문서를 수정해 커밋한 뒤 원격에 반영한 기록으로 확인 가능
+
+### 2) pull 실습 흔적
+- 기능 보완 브랜치 `chore/requirement-proof`에서 작업 후 반영
+  - `633e072` : `Fix: 최고 점수 표시 문구 수정 및 README 상태 스키마 보완`
+- 이후 main에서 병합 커밋 생성
+  - `70bf68e` : `Merge: 보완사항 수정 브랜치 병합`
+- 최종적으로 main 최신 커밋이 원격과 동일
+  - `62501bb` : `add ToDo` (`HEAD -> main`, `origin/main`)
+
+### 3) 로그 기준 검증 요약
+- 커밋 이력: 10개 이상 확인
+- 브랜치 생성/병합: 1회 이상 확인 (`chore/requirement-proof` -> `main`)
+- clone 실습 관련 커밋: 1회 이상 확인 (`6cb4148`)
+- pull/동기화 결과: main과 origin/main 정렬 상태 확인 (`62501bb`)
+
+### 4) 검증 명령어
+아래 명령어를 실행하면 위 기록을 동일하게 확인할 수 있습니다.
+
+```bash
+git --no-pager log --oneline --decorate -n 15
+```
